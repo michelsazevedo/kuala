@@ -7,18 +7,13 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/michelsazevedo/kuala/api"
 	"github.com/michelsazevedo/kuala/config"
-	"github.com/michelsazevedo/kuala/domain"
-	"github.com/michelsazevedo/kuala/repository"
 )
 
 func main() {
-	conf, _ := config.NewConfig("./config/config.yaml")
-	repo, _ := repository.NewPostgresRepository(conf.Database.Host,
-		conf.Database.Username, conf.Database.Password, conf.Database.Database)
-	service := domain.NewJobService(repo)
-	handler := api.NewHandler(service)
+	boot := config.NewBoot()
+	handler := boot.Handler
+	settings := boot.Settings
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -36,5 +31,5 @@ func main() {
 		json.NewEncoder(w).Encode(healthz)
 	})
 
-	log.Fatal(http.ListenAndServe(conf.Server.Port, r))
+	log.Fatal(http.ListenAndServe(settings.Server.Port, r))
 }

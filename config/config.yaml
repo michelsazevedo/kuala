@@ -5,5 +5,7 @@ database:
   database: "${POSTGRES_DB}"
   timeout: 5
 
-server:
-  port: ":8080"
+settings:
+  secret: Yu3hD78tWq01
+  server:
+    port: ":8080"

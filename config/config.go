@@ -8,6 +8,14 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+type Settings struct {
+	Secret string `yaml:"secret"`
+	Server struct {
+		Port string `yaml:"port"`
+		Host string `yaml:"host"`
+	}
+}
+
 //Config ...
 type Config struct {
 	Database struct {
@@ -18,10 +26,7 @@ type Config struct {
 		Timeout  string `yaml:timeout`
 	} `yaml:"database"`
 
-	Server struct {
-		Port string `yaml:"port"`
-		Host string `yaml:"host"`
-	} `yaml:"server"`
+	Settings Settings `yaml:"settings"`
 }
 
 //NewConfig ...
