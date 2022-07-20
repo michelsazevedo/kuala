@@ -3,17 +3,18 @@ package config
 import (
 	"log"
 
+	"github.com/go-chi/chi"
 	"github.com/michelsazevedo/kuala/api"
 	"github.com/michelsazevedo/kuala/domain"
 	"github.com/michelsazevedo/kuala/repository"
 )
 
-type Boot struct {
-	Handler  api.JobHandler
+type Application struct {
+	Routes   chi.Router
 	Settings Settings
 }
 
-func NewBoot() *Boot {
+func NewApplication() *Application {
 	conf, err := NewConfig("./config/config.yaml")
 	if err != nil {
 		log.Default().Fatal(err)
@@ -24,5 +25,5 @@ func NewBoot() *Boot {
 	service := domain.NewJobService(repo)
 	handler := api.NewHandler(service)
 
-	return &Boot{Handler: handler, Settings: conf.Settings}
+	return &Application{Routes: Routes(handler), Settings: conf.Settings}
 }
